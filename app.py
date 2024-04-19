@@ -1,4 +1,4 @@
-# Step 1: Load Your Neural Network Model and Define Prediction Function
+ # Step 1: Load Your Neural Network Model and Define Prediction Function
 import tensorflow as tf
 import numpy as np
 
@@ -34,8 +34,14 @@ def main():
     # Set background color of Streamlit app to white
     st.set_page_config(page_title="CropMe", page_icon="🌾", initial_sidebar_state="expanded")
 
+
     # Set app title
-    st.title('Find your Crop')
+    st.title('Predict the Best Crop for your farm!')
+    # Display the image using a URL
+    image_url = "https://raw.githubusercontent.com/KaushikMreddy/TalkCrops_Capstone/main/crop-image.jpg" # Replace this with your image URL
+    st.image(image_url, use_column_width=True)
+
+    
 
     # Add a brief description
     st.write('This App allows you to find your ideal crop for your farmland')
