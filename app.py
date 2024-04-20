@@ -1,23 +1,20 @@
- # Step 1: Load Your Neural Network Model and Define Prediction Function
-import tensorflow as tf
+ # Step 1: Load the Random Forest Model and Define Prediction Function
+from joblib import load
 import numpy as np
 
-# Load your trained neural network model
-# Replace this with code to load your specific model
-model = tf.keras.models.load_model('crops.h5')
+# Load your trained Random Forest model
+# Replace 'crops.joblib' with the filename/path where you saved your Random Forest model
+rf_classifier = load('crops.joblib')
 
 # Function to make predictions using the model
 def make_prediction(input_data):
-    # Preprocess input data as needed (e.g., convert to NumPy array)
-    input_data_array = np.array(input_data)
     # Make predictions using the loaded model
-    predictions = model.predict(input_data_array)
+    predictions = rf_classifier.predict(input_data)
     # Return the predictions
     return predictions
 
 # Step 2: Define Your Streamlit App Code
 import streamlit as st
-
 
 # Define label mapping dictionary
 label_mapping = {
@@ -34,14 +31,11 @@ def main():
     # Set background color of Streamlit app to white
     st.set_page_config(page_title="CropMe", page_icon="🌾", initial_sidebar_state="expanded")
 
-
     # Set app title
     st.title('Predict the Best Crop for your farm!')
     # Display the image using a URL
     image_url = "https://raw.githubusercontent.com/KaushikMreddy/TalkCrops_Capstone/main/crop-image.jpg" # Replace this with your image URL
     st.image(image_url, use_column_width=True)
-
-    
 
     # Add a brief description
     st.write('This App allows you to find your ideal crop for your farmland')
@@ -57,15 +51,14 @@ def main():
     ph = st.slider('PH:', min_value=0.0, max_value=14.0, value=0.0, step=0.1)
     rainfall = st.slider('Rainfall (mm):', min_value=0.0, max_value=300.0, value=0.0, step=0.01)
 
-
     # Make predictions when user clicks the 'Predict' button
     if st.button('Predict'):
         # Collect input data into a list or array
         input_data = [[N, P, K, temperature, humidity, ph, rainfall]]
         # Make predictions using the model
         predictions = make_prediction(input_data)
-        # Get the index of the class with the highest probability
-        predicted_class_index = np.argmax(predictions)
+        # Get the predicted class index
+        predicted_class_index = predictions[0]
         # Find the corresponding label using the label mapping dictionary
         predicted_label = label_mapping[predicted_class_index]
         # Display the predicted label
