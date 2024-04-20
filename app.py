@@ -53,17 +53,17 @@ def main():
 
     # Make predictions when user clicks the 'Predict' button
     if st.button('Predict'):
-        # Collect input data into a list or array
-        input_data = [[N, P, K, temperature, humidity, ph, rainfall]]
-        # Make predictions using the model
-        predictions = make_prediction(input_data)
-        # Get the predicted class index
-        predicted_class_index = predictions[0]
-        # Find the corresponding label using the label mapping dictionary
-        predicted_label = label_mapping[predicted_class_index]
-        # Display the predicted label
-        st.header('Predicted Crop:')
-        st.subheader(predicted_label.upper())
+          # Collect input data into a list or array
+          input_data = [[N, P, K, temperature, humidity, ph, rainfall]]
+          # Make predictions using the model
+          predictions = make_prediction(input_data)
+          # Get the predicted class index
+          predicted_class_index = np.argmax(predictions)
+          # Find the corresponding label using the label mapping dictionary
+          predicted_label = label_mapping[predicted_class_index]
+          # Display the predicted label
+          st.header('Predicted Crop:')
+          st.subheader(predicted_label.upper())
 
 # Step 3: Run Your Streamlit App
 if __name__ == '__main__':
