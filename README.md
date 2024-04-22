@@ -1,5 +1,8 @@
 # TalkCrops_Capstone
 
+# The Narrated Demo of the Application
+https://github.com/KaushikMreddy/TalkCrops_Capstone/assets/144624017/338e9a0c-85e8-409d-959e-444c80b1f7e0
+
 
 ### How to run the Application
 
