@@ -97,7 +97,7 @@ def main():
     f"""
     <div style="background-color:#f0f0f0;padding:10px;border-radius:10px">
         <h2 style="color:#008000;text-align:center;">Predicted Crop</h2>
-        <h3 style="color:#4d4dff;text-align:center;">Plant {predicted_label.upper()} and Prosper</h3>
+        <h3 style="color:#4d4dff;text-align:center;">Plant {predicted_label.upper()} in your field</h3>
     </div>
     <br>
     <strong>Model Accuracy:</strong> Our Random Forest model achieves a remarkable accuracy rate of 99%.
