@@ -1,4 +1,4 @@
-
+ 
 import streamlit as st
 from joblib import load
 import numpy as np
@@ -12,6 +12,12 @@ def make_prediction(input_data):
     predictions = rf_classifier.predict(input_data)
     return predictions
 
+
+# Define the crop options for the dropdown menu
+crop_options = ["apple", "banana", "blackgram", "chickpea", "coconut", "coffee", "cotton", "grapes", "jute", "kidneybeans",
+                "lentil", "maize", "mango", "mothbeans", "mungbean", "muskmelon", "orange", "papaya", "pigeonpeas",
+                "pomegranate", "rice", "watermelon"]
+
 # Define label mapping dictionary
 label_mapping = {
     0: 'apple', 1: 'banana', 2: 'blackgram', 3: 'chickpea', 4: 'coconut',
@@ -21,22 +27,52 @@ label_mapping = {
     19: 'pomegranate', 20: 'rice', 21: 'watermelon'
 }
 
+avg_crop_values = {
+  "apple": {"N": 66.1, "P": 91.4, "K": 78.0, "temperature": 43.5, "humidity": 92.5, "ph": 42.8, "rainfall": 37.5},
+  "banana": {"N": 71.4, "P": 56.9, "K": 18.3, "temperature": 59.7, "humidity": 80.5, "ph": 42.7, "rainfall": 35.0},
+  "blackgram": {"N": 28.6, "P": 46.6, "K": 4.9, "temperature": 64.1, "humidity": 74.0, "ph": 51.0, "rainfall": 22.6},
+  "chickpea": {"N": 14.3, "P": 46.6, "K": 36.6, "temperature": 26.7, "humidity": 17.0, "ph": 52.8, "rainfall": 26.6},
+  "coconut": {"N": 14.3, "P": 6.9, "K": 11.0, "temperature": 55.9, "humidity": 95.5, "ph": 42.6, "rainfall": 52.8},
+  "coffee": {"N": 71.4, "P": 17.2, "K": 11.0, "temperature": 51.7, "humidity": 61.0, "ph": 48.3, "rainfall": 52.4},
+  "cotton": {"N": 85.7, "P": 32.8, "K": 11.0, "temperature": 45.3, "humidity": 79.9, "ph": 49.3, "rainfall": 28.0},
+  "grapes": {"N": 14.3, "P": 91.4, "K": 97.6, "temperature": 51.0, "humidity": 83.0, "ph": 42.2, "rainfall": 21.6},
+  "jute": {"N": 57.1, "P": 32.8, "K": 24.4, "temperature": 48.3, "humidity": 80.9, "ph": 48.2, "rainfall": 58.3},
+  "kidneybeans": {"N": 14.3, "P": 46.6, "K": 11.0, "temperature": 36.2, "humidity": 21.5, "ph": 41.1, "rainfall": 28.0},
+  "lentil": {"N": 14.3, "P": 46.6, "K": 11.0, "temperature": 47.0, "humidity": 44.0, "ph": 49.1, "rainfall": 13.2},
+  "maize": {"N": 57.1, "P": 32.8, "K": 11.0, "temperature": 44.6, "humidity": 65.1, "ph": 44.7, "rainfall": 21.7},
+  "mango": {"N": 14.3, "P": 19.0, "K": 11.0, "temperature": 63.0, "humidity": 50.0, "ph": 40.8, "rainfall": 31.4},
+  "mothbeans": {"N": 14.3, "P": 32.8, "K": 11.0, "temperature": 65.4, "humidity": 52.5, "ph": 48.0, "rainfall": 27.2},
+  "mungbean": {"N": 14.3, "P": 32.8, "K": 11.0, "temperature": 65.3, "humidity": 85.5, "ph": 47.9, "rainfall": 20.0},
+  "muskmelon": {"N": 71.4, "P": 6.9, "K": 24.4, "temperature": 54.0, "humidity": 92.5, "ph": 45.7, "rainfall": 7.4},
+  "orange": {"N": 14.3, "P": 6.9, "K": 3.7, "temperature": 42.5, "humidity": 92.5, "ph": 42.9, "rainfall": 36.6},
+  "papaya": {"N": 36.1, "P": 40.0, "K": 24.4, "temperature": 66.7, "humidity": 92.5, "ph": 48.2, "rainfall": 48.2},
+  "pigeonpeas": {"N": 14.3, "P": 46.6, "K": 11.0, "temperature": 54.7, "humidity": 50.0, "ph": 42.9, "rainfall": 48.1},
+  "pomegranate": {"N": 14.3, "P": 6.9, "K": 18.3, "temperature": 38.4, "humidity": 90.1, "ph": 45.0, "rainfall": 35.8},
+  "rice": {"N": 56.8, "P": 32.8, "K": 18.3, "temperature": 43.2, "humidity": 82.5, "ph": 45.9, "rainfall": 80.2},
+  "watermelon": {"N": 71.4, "P": 6.9, "K": 24.4, "temperature": 51.0, "humidity": 85.0, "ph": 46.1, "rainfall": 16.5}
+}
 
-def plot_spider_graph(inputs):
-    # Calculate angles for each category
-    categories = ['Nitrogen', 'Phosphorous', 'Potassium', 'Temperature', 'Humidity', 'PH', 'Rainfall']
-    values_list = [int(value) for value in inputs]
+
+def plot_spider_graph(crop_name):
+    crop_values = avg_crop_values[crop_name]
+    categories = list(crop_values.keys())
+    values_list = [crop_values[category] for category in categories]
 
     angles = np.linspace(0, 2 * np.pi, len(categories), endpoint=False).tolist()
     values = values_list + [values_list[0]] 
     angles += angles[:1]
 
-    # Create the spider graph
-    fig, ax = plt.subplots(figsize=(6, 6), subplot_kw=dict(polar=True))
-    ax.fill(angles, values, color='skyblue', alpha=0.6)
-    ax.set_yticklabels([])  # Hide radial ticks
-    plt.xticks(angles[:-1], categories, color='grey', size=10)  # Set category labels
-    st.pyplot(fig)  # Display the spider graph
+    fig, ax = plt.subplots(figsize=(4, 4), subplot_kw=dict(polar=True))
+    ax.fill(angles, values, color='red', alpha=0.6)
+    ax.set_yticklabels([]) 
+    plt.xticks(angles[:-1], categories, color='black', size=10)
+
+    # Annotate each point with its corresponding value
+    for angle, value, category in zip(angles, values_list, categories):
+        ax.text(angle, value, f'{value}', ha='center', va='center')
+
+    st.pyplot(fig)
+
 
 # Function to create Streamlit app
 def main():
@@ -101,9 +137,18 @@ def main():
     </div>
     <br>
     <strong>Model Accuracy:</strong> Our Random Forest model achieves a remarkable accuracy rate of 99%.
+    <br>
     """,
     unsafe_allow_html=True
 )
+     # Add dropdown menu at the bottom to select crop
+    selected_crop = st.selectbox("Select a Crop", crop_options)
+
+    if selected_crop:
+        plot_spider_graph(selected_crop)
+    else:
+        st.write("Select a crop to display its attributes.")
+
 # Run the app
 if __name__ == '__main__':
     main()
