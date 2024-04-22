@@ -91,6 +91,7 @@ def main():
 
     st.write('A Random Forest model is an ensemble learning method that builds multiple decision trees during training and outputs the mode of the classes for classification problems or the average prediction for regression problems.')
 
+    st.write('The spider graph at the bottom displays the average feature values per crop given by a percentage in their respective ranges')
 
     # Add input fields for user to enter data in the sidebar
     with st.sidebar:
