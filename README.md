@@ -1,10 +1,13 @@
-# TalkCrops_Capstone
+# TalkCrops Capstone Project
 
-# The Narrated Demo of the Application
+## Link to Application - Deployed on Streamlit Community Cloud
+https://kaushik-talkcropscapstone-dsem6105.streamlit.app/
+
+## The Narrated Demo of the Application
 https://github.com/KaushikMreddy/TalkCrops_Capstone/assets/144624017/338e9a0c-85e8-409d-959e-444c80b1f7e0
 
 
-### How to run the Application
+## How to run the Application
 
 1. **Download the python notebook**: TalkCrops.ipynb
 2. **Download app.py**
